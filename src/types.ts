@@ -25,3 +25,11 @@ export type Response<T extends z.ZodType> = ChatResponse & {
   // parsed and typecasted data from the model
   data: z.infer<T>;
 };
+
+export type ResponseZod<T extends z.ZodType> = Omit<ChatResponse, 'respond'> & {
+  data: z.infer<T>;
+  respond: (
+    prompt: string | (() => string),
+    _opt?: Partial<RequestOptions<T>>,
+  ) => Promise<ResponseZod<T>>;
+};
